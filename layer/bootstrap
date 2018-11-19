@@ -1,0 +1,214 @@
+#!/opt/bin/php -c/opt/php.ini
+<?php
+
+ini_set('display_errors', 'On');
+error_reporting(E_ALL | E_STRICT);
+
+$AWS_LAMBDA_RUNTIME_API = getenv('AWS_LAMBDA_RUNTIME_API');
+
+function start_webserver() {
+  $pid = pcntl_fork();
+  switch($pid) {
+    case -1:
+      die('Failed to fork webserver process');
+
+    case 0:
+      // exec the command
+      chdir('/var/task');
+      exec('php -S localhost:8000 -c /opt/php.ini');
+      exit;
+
+    // return the child pid to parent
+    default: 
+      return $pid;
+  }
+}
+
+function fail($AWS_LAMBDA_RUNTIME_API, $invocation_id, $message) {
+  $ch = curl_init("http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/invocation/$invocation_id/response");
+
+  $response = array();
+
+  $response['statusCode'] = 500;
+  $response['body'] = $message;
+
+  $response_json = json_encode($response);
+
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $response_json);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($response_json)
+  ));
+
+  curl_exec($ch);
+  curl_close($ch);
+}
+
+start_webserver();
+
+while (true) {
+  $ch = curl_init("http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/invocation/next");
+
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+  curl_setopt($ch, CURLOPT_FAILONERROR, TRUE);
+
+  $invocation_id = '';
+
+  curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) use (&$invocation_id) {
+    if (!preg_match('/:\s*/', $header)) {
+      return strlen($header);
+    }
+
+    [$name, $value] = preg_split('/:\s*/', $header, 2);
+
+    if (strtolower($name) == 'x-amz-aws-request-id') {
+      $invocation_id = trim($value);
+    }
+
+    return strlen($header);
+  });
+
+  $body = '';
+
+  curl_setopt($ch, CURLOPT_WRITEFUNCTION, function ($ch, $chunk) use (&$body) {
+    $body .= $chunk;
+
+    return strlen($chunk);
+  });
+
+  curl_exec($ch);
+
+  if (curl_error($ch)) {
+    die('Failed to fetch next Lambda invocation: ' . curl_error($ch) . "\n");
+  }
+
+  curl_close($ch);
+
+  if (!$body) {
+    die("Empty Lambda invocation response\n");
+  }
+
+  $event = json_decode($body, TRUE);
+
+  if (!array_key_exists('requestContext', $event)) {
+    fail($AWS_LAMBDA_RUNTIME_API, $invocation_id, 'Event is not an API Gateway request');
+    continue;
+  }
+
+  $uri = $event['path'];
+
+  if (count($event['multiValueQueryStringParameters']) > 0) {
+    $first = TRUE;
+    foreach ($event['multiValueQueryStringParameters'] as $name => $values) {
+      foreach ($values as $value) {
+        if ($first) {
+          $uri .= "?";
+          $first = FALSE;
+        } else {
+          $uri .= "&";
+        }
+
+        $uri .= $name . '=' . $value;
+      }
+    }
+  }
+
+  $ch = curl_init("http://localhost:8000$uri");
+
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+
+  if (array_key_exists('multiValueHeaders', $event)) {
+    $headers = array();
+
+    foreach ($event['multiValueHeaders'] as $name => $values) {
+      foreach ($values as $value) {
+        array_push($headers, "${name}: ${value}");
+      }
+    }
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  }
+
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $event['httpMethod']);
+
+  if (array_key_exists('body', $event)) {
+    $body = $event['body'];
+    if (array_key_exists('isBase64Encoded', $event) && $event['isBase64Encoded']) {
+      $body = base64_decode($body);
+    }
+  } else {
+    $body = '';
+  }
+
+  if (strlen($body) > 0) {
+    curl_setopt($ch, CURLOPT_INFILESIZE, strlen($body));
+    curl_setopt($ch, CURLOPT_READFUNCTION, function ($ch, $fd, $length) use ($body) {
+      return $body;
+    });
+  }
+
+  $response = array();
+  $response['multiValueHeaders'] = array();
+  $response['body'] = '';
+
+  curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) use (&$response) {
+    if (preg_match('/HTTP\/1.1 (\d+) .*/', $header, $matches)) {
+      $response['statusCode'] = intval($matches[1]);
+      return strlen($header);
+    }
+
+    if (!preg_match('/:\s*/', $header)) {
+      return strlen($header);
+    }
+
+    [$name, $value] = preg_split('/:\s*/', $header, 2);
+
+    $name = trim($name);
+    $value = trim($value);
+
+    if ($name == '') {
+      return strlen($header);
+    }
+
+    if (!array_key_exists($name, $response['multiValueHeaders'])) {
+      $response['multiValueHeaders'][$name] = array();
+    }
+
+    array_push($response['multiValueHeaders'][$name], $value);
+
+    return strlen($header);
+  });
+
+  curl_setopt($ch, CURLOPT_WRITEFUNCTION, function ($ch, $chunk) use (&$response) {
+    $response['body'] .= $chunk;
+
+    return strlen($chunk);
+  });
+
+  curl_exec($ch);
+  curl_close($ch);
+
+  if (preg_match('/[^\x00-\x7f]/', $response['body'])) {
+    $response['body'] = base64_encode($response_body);
+    $response['isBase64Encoded'] = TRUE;
+  }
+
+  $ch = curl_init("http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/invocation/$invocation_id/response");
+
+  $response_json = json_encode($response);
+
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $response_json);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($response_json)
+  ));
+
+  curl_exec($ch);
+  curl_close($ch);
+}
+
+?>
