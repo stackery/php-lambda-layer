@@ -1,7 +1,6 @@
 #!/opt/bin/php -c/opt/php.ini
 <?php
 
-ini_set('display_errors', 'On');
 error_reporting(E_ALL | E_STRICT);
 
 $AWS_LAMBDA_RUNTIME_API = getenv('AWS_LAMBDA_RUNTIME_API');

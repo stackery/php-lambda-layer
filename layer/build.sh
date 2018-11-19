@@ -19,4 +19,4 @@ cp /usr/lib64/libedit.so.0 lib/
 
 cp -a /usr/lib64/php lib/
 
-zip -r /opt/layer/php-layer.zip .
+zip -r /opt/layer/php71.zip .
