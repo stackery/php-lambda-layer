@@ -115,7 +115,11 @@ while (true) {
           $uri .= "&";
         }
 
-        $uri .= $name . '=' . $value;
+        $uri .= $name;
+
+        if ($value != '') {
+          $uri .= '=' . $value;
+        }
       }
     }
   }
