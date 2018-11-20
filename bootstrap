@@ -14,7 +14,7 @@ function start_webserver() {
     case 0:
       // exec the command
       chdir('/var/task');
-      exec('php -S localhost:8000 -c /opt/php.ini');
+      exec('php -S localhost:8000');
       exit;
 
     // return the child pid to parent
