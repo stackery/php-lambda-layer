@@ -104,7 +104,7 @@ while (true) {
 
   $uri = $event['path'];
 
-  if (array_key_exists('multiValueQueryStringParameters', $event)) {
+  if (array_key_exists('multiValueQueryStringParameters', $event) && $event['multiValueQueryStringParameters']) {
     $first = TRUE;
     foreach ($event['multiValueQueryStringParameters'] as $name => $values) {
       foreach ($values as $value) {
