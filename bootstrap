@@ -62,7 +62,7 @@ while (true) {
 
     [$name, $value] = preg_split('/:\s*/', $header, 2);
 
-    if (strtolower($name) == 'x-amz-aws-request-id') {
+    if (strtolower($name) == 'lambda-runtime-aws-request-id') {
       $invocation_id = trim($value);
     }
 
@@ -81,6 +81,10 @@ while (true) {
 
   if (curl_error($ch)) {
     die('Failed to fetch next Lambda invocation: ' . curl_error($ch) . "\n");
+  }
+
+  if ($invocation_id == '') {
+    die('Failed to determine Lambda invocation ID');
   }
 
   curl_close($ch);
