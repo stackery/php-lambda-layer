@@ -18,7 +18,9 @@ function start_webserver() {
       exit;
 
     // return the child pid to parent
-    default: 
+    default:
+      // Wait for child server to start
+      sleep(1);
       return $pid;
   }
 }
