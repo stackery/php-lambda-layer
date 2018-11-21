@@ -13,8 +13,9 @@ function start_webserver() {
 
     case 0:
       // exec the command
+      $HANDLER = getenv('_HANDLER');
       chdir('/var/task');
-      exec('php -S localhost:8000');
+      exec("php -S localhost:8000 '$HANDLER'");
       exit;
 
     // return the child pid to parent
