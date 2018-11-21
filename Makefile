@@ -7,7 +7,7 @@ upload: php71.zip
 	./upload.sh
 
 publish: php71.zip
-  ./publish.sh
+	./publish.sh
 
 clean:
 	rm php71.zip
