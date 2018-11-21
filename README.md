@@ -117,6 +117,7 @@ Lastly, let's write our script. Put this in `index.php`:
 
 ```php
 Hello World! You've reached <?php print($_SERVER['REQUEST_URI']); ?>
+
 ```
 
 You should now have a directory structure like:
