@@ -9,7 +9,7 @@ for region in "${PHP71_REGIONS[@]}"; do
   bucket_name="stackery-layers-${region}"
 
   echo "Publishing Lambda Layer php71 in region ${region}..."
-  version=$(aws --region $region lambda publish-layer-version --layer-name php71 --compatible-runtimes provided --content "S3Bucket=$bucket_name,S3Key=${S3KEY}" --output text --query Version)
+  version=$(aws --region $region lambda publish-layer-version --layer-name php71 --compatible-runtimes provided --license-info 'http://www.php.net/license/3_01.txt' --content "S3Bucket=$bucket_name,S3Key=${S3KEY}" --output text --query Version)
   echo "Published Lambda Layer php71 in region ${region} version ${version}"
 
   echo "Setting public permissions on Lambda Layer php71 version ${version} in region ${region}..."
