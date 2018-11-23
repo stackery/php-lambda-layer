@@ -7,7 +7,7 @@ Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda 
 ## Current Layer Version ARN
 When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARN is:
 
-**arn:aws:lambda:<region>:887080169480:layer:php71:2**
+**arn:aws:lambda:<region>:887080169480:layer:php71:3**
 
 ### Usage
 #### General Usage
@@ -89,7 +89,7 @@ Resources:
       Timeout: 30
       Tracing: Active
       Layers:
-        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php71:2
+        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php71:3
       Events:
         api:
           Type: Api
