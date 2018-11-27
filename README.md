@@ -2,8 +2,6 @@
 
 Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) requests.
 
-**:warning: This is an experimental AWS Lambda Runtime Layer. It should not be used for production services. Please read the disclaimer at the bottom of this readme before using!**
-
 ## Current Layer Version ARN
 When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARN is:
 
