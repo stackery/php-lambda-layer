@@ -7,7 +7,7 @@ This is an early iteration of the PHP runtime Layer which is not yet ready for p
 ## Current Layer Version ARN
 When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARN is:
 
-**arn:aws:lambda:<region>:887080169480:layer:php71:3**
+**arn:aws:lambda:\<region\>:887080169480:layer:php71:3**
 
 ### Usage
 #### General Usage
