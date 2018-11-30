@@ -2,6 +2,8 @@
 
 Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) requests.
 
+And, if you're looking for a great way to build serverless apps of all kinds, be sure to check out [Stackery](https://stackery.io)!
+
 This is an early iteration of the PHP runtime Layer which is not yet ready for production. Please feel free to use this Layer to learn about the Lambda Layers feature and begin experimenting with PHP functions. We welcome feedback and stay tuned for the production-ready version coming soon.
 
 ## Current Layer Version ARN
@@ -17,7 +19,7 @@ The layer runs the PHP 7.1 [PHP webserver](http://php.net/manual/en/features.com
 $ php -S localhost:8000 '<handler>'
 ```
 
-The Lambda Function Handler property specifies the location of the of the webserver router script. This script must be provided.
+The Lambda Function Handler property specifies the location of the the script executed in response to an incoming API Gateway request.
 
 ##### Extensions
 Extensions can be built using the lambci/lambda:build-nodejs8.10 Docker image. It is recommended that extensions be built into a Lambda Layer in /lib/php/7.1/modules. Then, in a php.ini file in the Lambda Function root directory put:
@@ -84,7 +86,7 @@ Resources:
       Description: PHP Webserver
       CodeUri: src/server
       Runtime: provided
-      Handler: router.php
+      Handler: index.php
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -96,21 +98,6 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
-```
-
-Now create the PHP application in `src/server`. We're going to create a webserver router script first. Put the following in `router.php`:
-
-```php
-<?php
-if (is_file($_SERVER['DOCUMENT_ROOT'].'/'.$_SERVER['SCRIPT_NAME'])) {
-  // Serve static files directly
-  return false;
-}
-
-// Run index.php for all requests
-$_SERVER['SCRIPT_NAME'] = '/index.php';
-require 'index.php';
-?>
 ```
 
 Lastly, let's write our script. Put this in `index.php`:
@@ -127,8 +114,7 @@ You should now have a directory structure like:
 ├── template.yaml
 └── src
     └── php
-        ├── index.php
-        └── router.php
+        └── index.php
 ```
 
 We're ready to deploy! Run the following commands:
