@@ -84,7 +84,7 @@ Resources:
     Properties:
       FunctionName: !Sub ${AWS::StackName}-phpserver
       Description: PHP Webserver
-      CodeUri: src/server
+      CodeUri: src/php
       Runtime: provided
       Handler: index.php
       MemorySize: 3008
