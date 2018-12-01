@@ -200,11 +200,6 @@ while (true) {
   curl_exec($ch);
   curl_close($ch);
 
-  if (preg_match('/[^\x00-\x7f]/', $response['body'])) {
-    $response['body'] = base64_encode($response_body);
-    $response['isBase64Encoded'] = TRUE;
-  }
-
   $ch = curl_init("http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/invocation/$invocation_id/response");
 
   $response_json = json_encode($response);
