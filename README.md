@@ -22,13 +22,6 @@ $ php -S localhost:8000 '<handler>'
 The Lambda Function Handler property specifies the location of the the script executed in response to an incoming API Gateway request.
 
 ##### Extensions
-Extensions can be built using the lambci/lambda:build-nodejs8.10 Docker image. It is recommended that extensions be built into a Lambda Layer in /lib/php/7.1/modules. Then, in a php.ini file in the Lambda Function root directory put:
-
-```ini
-extension_dir=/opt/lib/php/7.1/modules
-extension=...
-```
-
 The following extensions are built into the layer and available in /opt/lib/php/7.1/modules:
 
 ```
@@ -59,6 +52,14 @@ xmlwriter.so
 xsl.so
 zip.so
 ```
+
+These extensions are not loaded by default. You must add the extension to your php.ini file to use it:
+
+```ini
+extension=json.so
+```
+
+Extensions can be built using the lambci/lambda:build-nodejs8.10 Docker image. It is recommended that custom extensions be provided by a separate Lambda Layer with the extension .so files placed in /lib/php/7.1/modules/ so they can be loaded alongside the built-in extensions listed above.
 
 #### Example
 Let's create an AWS SAM PHP application. We suggest using [Stackery](https://stackery.io) to make this super simple. It automates all the scaffolding shown below. But you may also choose to roll your own application from scratch.
