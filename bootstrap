@@ -15,7 +15,7 @@ function start_webserver() {
       // exec the command
       $HANDLER = getenv('_HANDLER');
       chdir('/var/task');
-      exec("php -S localhost:8000 -c /var/task/php.ini '$HANDLER'");
+      exec("php -S localhost:8000 -c /var/task/php.ini -d extension_dir=/opt/lib/php/7.1/modules '$HANDLER'");
       exit;
 
     // return the child pid to parent
