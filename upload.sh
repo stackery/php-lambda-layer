@@ -2,11 +2,11 @@
 
 source regions.sh
 
-MD5SUM=$(md5 -q php71.zip)
-S3KEY="php71/${MD5SUM}"
+MD5SUM=$(md5sum php71.zip | grep -Eo '^[^ ]+')
+S3KEY="php71/${MD5SUM}.zip"
 
 for region in "${PHP71_REGIONS[@]}"; do
-  bucket_name="stackery-layers-${region}"
+  bucket_name="sm-layers-${region}"
 
   echo "Uploading php71.zip to s3://${bucket_name}/${S3KEY}"
 

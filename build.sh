@@ -1,6 +1,10 @@
 #!/bin/bash
 
-yum install -y php71-cli zip
+yum install -y php71-cli zip php71-devel php71-mbstring.x86_64 php71-mcrypt.x86_64 php71-pdo.x86_64 php71-pecl-redis.x86_64 php71-mysqlnd.x86_64
+cd /tmp
+git clone --depth=1 "git://github.com/phalcon/cphalcon.git"
+cd cphalcon/build && ./install
+rm -rf /tmp/cphalcon
 
 mkdir /tmp/layer
 cd /tmp/layer
