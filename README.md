@@ -63,7 +63,9 @@ extension=json.so
 
 Extensions can be built using the lambci/lambda:build-nodejs8.10 Docker image. It is recommended that custom extensions be provided by a separate Lambda Layer with the extension .so files placed in /lib/php/7.1/modules/ so they can be loaded alongside the built-in extensions listed above.
 
-#### Example
+The extensions can be loaded by adding an ini file in the etc/php-7.1.d this will be picked up automatically
+
+#### SAM Example
 Let's create an AWS SAM PHP application. We suggest using [Stackery](https://stackery.io) to make this super simple. It automates all the scaffolding shown below. But you may also choose to roll your own application from scratch.
 
 First, install [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli). Make sure to create a SAM deployment bucket as shown in [Packaging your application](https://github.com/awslabs/aws-sam-cli/blob/develop/docs/deploying_serverless_applications.rst#packaging-your-application)
