@@ -208,7 +208,11 @@ while (true) {
   $isALB = array_key_exists("elb", $event['requestContext']);
   if ($isALB) { // Add Headers For ALB
     $status = $response["statusCode"];
-    $response["statusDescription"] = "$status ". $http_codes[$status];
+    if (array_key_exists($status, $http_codes)) {
+        $response["statusDescription"] = "$status ". $http_codes[$status];
+    } else {
+        $response["statusDescription"] = "$status Unknown";
+    }
     $response["isBase64Encoded"] = false;
   }
   $response_json = json_encode($response);
