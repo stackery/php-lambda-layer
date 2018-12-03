@@ -134,10 +134,11 @@ while (true) {
 
     foreach ($event['multiValueHeaders'] as $name => $values) {
       foreach ($values as $value) {
-        array_push($headers, "${name}: ${value}");
+        if (strcasecmp($name, "content-length") == 0) array_push($headers, "${name}: ${strlen(body)}");
+        else array_push($headers, "${name}: ${value}");
       }
     }
-    
+
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   }
 
