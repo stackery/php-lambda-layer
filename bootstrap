@@ -129,19 +129,6 @@ while (true) {
 
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
-  if (array_key_exists('multiValueHeaders', $event)) {
-    $headers = array();
-
-    foreach ($event['multiValueHeaders'] as $name => $values) {
-      foreach ($values as $value) {
-        if (strcasecmp($name, "content-length") == 0) array_push($headers, "${name}: ${strlen(body)}");
-        else array_push($headers, "${name}: ${value}");
-      }
-    }
-
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-  }
-
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $event['httpMethod']);
 
   if (array_key_exists('body', $event)) {
@@ -158,6 +145,19 @@ while (true) {
     curl_setopt($ch, CURLOPT_READFUNCTION, function ($ch, $fd, $length) use ($body) {
       return $body;
     });
+  }
+
+  if (array_key_exists('multiValueHeaders', $event)) {
+    $headers = array();
+
+    foreach ($event['multiValueHeaders'] as $name => $values) {
+      foreach ($values as $value) {
+        if (strcasecmp($name, "content-length") == 0) array_push($headers, "${name}: ${strlen(body)}");
+        else array_push($headers, "${name}: ${value}");
+      }
+    }
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   }
 
   $response = array();
