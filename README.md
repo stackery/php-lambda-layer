@@ -1,6 +1,6 @@
 # PHP Layer For AWS Lambda
 
-Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) requests.
+Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) or [AWS Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) requests.
 
 And, if you're looking for a great way to build serverless apps of all kinds, be sure to check out [Stackery](https://stackery.io)!
 
@@ -21,7 +21,14 @@ The layer runs the PHP 7.1 [PHP webserver](http://php.net/manual/en/features.com
 $ php -S localhost:8000 '<handler>'
 ```
 
-The Lambda Function Handler property specifies the location of the the script executed in response to an incoming API Gateway request.
+The Lambda Function Handler property specifies the location of the the script executed in response to an incoming API Gateway or Application Load Balancer request.
+
+#### Configuration Files
+There are three locations where PHP configuration may be located:
+
+* Files in layer code packages located under /etc/php-7.1.d/
+* Files in function code package located under /php-7.1.d/
+* php.ini located at the root of the function code package
 
 ##### Extensions
 The following extensions are built into the layer and available in /opt/lib/php/7.1/modules:
@@ -55,15 +62,13 @@ xsl.so
 zip.so
 ```
 
-These extensions are not loaded by default. You must add the extension to your php.ini file to use it:
+These extensions are not loaded by default. You must add the extension to a php.ini file to use it:
 
 ```ini
 extension=json.so
 ```
 
 Extensions can be built using the lambci/lambda:build-nodejs8.10 Docker image. It is recommended that custom extensions be provided by a separate Lambda Layer with the extension .so files placed in /lib/php/7.1/modules/ so they can be loaded alongside the built-in extensions listed above.
-
-The extensions can be loaded by adding an ini file in the etc/php-7.1.d this will be picked up automatically
 
 #### SAM Example
 Let's create an AWS SAM PHP application. We suggest using [Stackery](https://stackery.io) to make this super simple. It automates all the scaffolding shown below. But you may also choose to roll your own application from scratch.
