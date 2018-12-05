@@ -1,1 +1,1 @@
-**:warning: Please make sure pull requests are opened against the development branch. Pull requests opened against master will be closed automatically.** You may delete this line once you have confirmed the correct branch. :pray:
+Please make sure pull requests are opened against the development branch. Pull requests opened against master will be closed automatically. Please delete this line once you have confirmed the correct branch.
