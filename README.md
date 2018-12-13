@@ -119,7 +119,7 @@ Hello World! You've reached <?php print($_SERVER['REQUEST_URI']); ?>
 
 You should now have a directory structure like:
 
-```
+```yaml
 .
 ├── template.yaml
 └── src
@@ -145,9 +145,12 @@ $ sam deploy \
 Build the layer by:
 
 1. Installing a Docker environment
-1. Running `make`
+2. Running `make`
 
 This will launch a Docker container that will build php71.zip.
+
+Example of installing other php modules:
+https://medium.com/@narwy/stackery-php-lambda-layer-add-mysql-1e49f3f3160a
 
 ### Disclaimer
 
