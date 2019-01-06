@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum install -y php71-cli zip
+yum install -y php71-mbstring.x86_64 zip php71-pgsql php71-mysqli
 
 mkdir /tmp/layer
 cd /tmp/layer
