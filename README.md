@@ -1,21 +1,19 @@
 # PHP Layer For AWS Lambda
 
-Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) or [AWS Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) requests.
+Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1/7.2/7.3 webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) or [AWS Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) requests.
 
-And, if you're looking for a great way to build serverless apps of all kinds, be sure to check out [Stackery](https://stackery.io)!
+This project is fork of the [Stackery](https://stackery.io) [php-lambda-layer](https://github.com/stackery/php-lambda-layer) that has been modified to:
+
+- support PHP 7.1, 7.2, and 7.3 (the original supports 7.1 only) - using the [Remi RPM Repository](https://rpms.remirepo.net/)
+- add support for mbstring, MySQL (pdo-mysql) and Postgres (pdo-pgsql)
+
+that are requirements for running frameworks such as [Lumen](https://lumen.laravel.com/) and [Laravel](https://laravel.com/) frameworks in serverless mode.
 
 This is an early iteration of the PHP runtime Layer which is not yet ready for production. Please feel free to use this Layer to learn about the Lambda Layers feature and begin experimenting with PHP functions. We welcome feedback and stay tuned for the production-ready version coming soon.
 
-## Current Layer Version ARN
-When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARN is:
-
-**arn:aws:lambda:\<region\>:887080169480:layer:php71:6**
-
-See [Releases](https://github.com/stackery/php-lambda-layer/releases) for release notes.
-
 ### Usage
 #### General Usage
-The layer runs the PHP 7.1 [PHP webserver](http://php.net/manual/en/features.commandline.webserver.php) in /var/task, the root directory of function code packages:
+The layer runs the PHP 7.* [PHP webserver](http://php.net/manual/en/features.commandline.webserver.php) in /var/task, the root directory of function code packages:
 
 ```sh
 $ php -S localhost:8000 '<handler>'
@@ -26,12 +24,14 @@ The Lambda Function Handler property specifies the location of the the script ex
 #### Configuration Files
 There are three locations where PHP configuration may be located:
 
-* Files in layer code packages located under /etc/php-7.1.d/
-* Files in function code package located under /php-7.1.d/
+* Files in layer code packages located under /etc/php-<PHP_VERSION>.d/
+* Files in function code package located under /php-<PHP_VERSION>.d/
 * php.ini located at the root of the function code package
 
+Replace <PHP_VERSION> with 7.1, 7.2, or 7.3 according to your preferred runtime.
+
 ##### Extensions
-The following extensions are built into the layer and available in /opt/lib/php/7.1/modules:
+The following extensions are built into the layer and available in /opt/lib/php/7.1/modules (PHP 7.1) or /opt/lib/php/modules (PHP 7.2/7.3):
 
 ```
 bz2.so
@@ -154,9 +154,23 @@ $ sam deploy \
 Build the layer by:
 
 1. Installing a Docker environment
-1. Running `make`
+2. Running `make`
 
-This will launch a Docker container that will build php71.zip.
+This will launch a Docker container that will build php71.zip, based on PHP 7.1 (default).
+
+You can run `make php72.zip` and `make php73.zip` to create a layer that is based on PHP 7.2/7.3.
+
+### Debugging
+
+Run:
+
+	$ docker run --rm -it -v `pwd`:/opt/layer lambci/lambda:build-nodejs8.10 /bin/bash
+	
+If you are on Windows, run this instead:
+
+	> docker run --rm -it -v %cd%:/opt/layer lambci/lambda:build-nodejs8.10 /bin/bash
+	
+and execute manually the commands in the build.sh file.
 
 ### Disclaimer
 
