@@ -1,4 +1,4 @@
-PHP71_REGIONS=(
+PHP_REGIONS=(
   ap-northeast-1
   ap-northeast-2
   ap-south-1
