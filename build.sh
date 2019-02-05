@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum install -y php71-cli zip
+yum install -y php71-mbstring.x86_64 zip php71-pgsql php71-mysqli
 
 mkdir /tmp/layer
 cd /tmp/layer
@@ -16,6 +16,7 @@ for lib in libncurses.so.5 libtinfo.so.5 libpcre.so.0; do
 done
 
 cp /usr/lib64/libedit.so.0 lib/
+cp /usr/lib64/libpq.so.5 lib/
 
 cp -a /usr/lib64/php lib/
 
