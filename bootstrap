@@ -124,23 +124,7 @@ while (true) {
   $uri = $event['path'];
 
   if (array_key_exists('multiValueQueryStringParameters', $event) && $event['multiValueQueryStringParameters']) {
-    $first = TRUE;
-    foreach ($event['multiValueQueryStringParameters'] as $name => $values) {
-      foreach ($values as $value) {
-        if ($first) {
-          $uri .= "?";
-          $first = FALSE;
-        } else {
-          $uri .= "&";
-        }
-
-        $uri .= $name;
-
-        if ($value != '') {
-          $uri .= '=' . $value;
-        }
-      }
-    }
+    $uri .= "?" . http_build_query($event['multiValueQueryStringParameters']);
   }
 
   $ch = curl_init("http://localhost:8000$uri");
@@ -173,7 +157,7 @@ while (true) {
   if (strlen($body) > 0) {
     if($event['httpMethod'] === 'POST'){
       curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    }    
+    }
     curl_setopt($ch, CURLOPT_INFILESIZE, strlen($body));
     curl_setopt($ch, CURLOPT_READFUNCTION, function ($ch, $fd, $length) use ($body) {
       return $body;
@@ -202,6 +186,8 @@ while (true) {
     if ($name == '') {
       return strlen($header);
     }
+
+    $name = strtolower($name);
 
     if (!array_key_exists($name, $response['multiValueHeaders'])) {
       $response['multiValueHeaders'][$name] = array();
