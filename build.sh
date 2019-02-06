@@ -5,7 +5,7 @@ yum install -y php71-mbstring.x86_64 zip php71-pgsql php71-mysqli
 mkdir /tmp/layer
 cd /tmp/layer
 cp /opt/layer/bootstrap .
-cp /opt/layer/php.ini .
+sed "s/PHP_MINOR_VERSION/1/g" /opt/layer/php.ini >php.ini
 
 mkdir bin
 cp /usr/bin/php bin/
