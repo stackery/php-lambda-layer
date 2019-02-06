@@ -1,15 +1,16 @@
 # PHP Layer For AWS Lambda
 
-Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.1/7.2/7.3  webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) or [AWS Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) requests.
+Ever wanted to run PHP websites in AWS Lambda? It's your lucky day! This Lambda Runtime Layer runs the [PHP 7.3/7.1  webserver](http://php.net/manual/en/features.commandline.webserver.php) in response to [AWS API Gateway](https://aws.amazon.com/api-gateway/) or [AWS Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) requests.
 
 And, if you're looking for a great way to build serverless apps of all kinds, be sure to check out [Stackery](https://stackery.io)!
 
 This is an early iteration of the PHP runtime Layer which is not yet ready for production. Please feel free to use this Layer to learn about the Lambda Layers feature and begin experimenting with PHP functions. We welcome feedback and stay tuned for the production-ready version coming soon.
 
 ## Current Layer Version ARN
-When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARN for PHP 7.1 is:
+When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARNs for PHP 7.3 and 7.1 are:
 
-**arn:aws:lambda:\<region\>:887080169480:layer:php71:7**
+**arn:aws:lambda:\<region\>:887080169480:layer:php73:1**
+**arn:aws:lambda:\<region\>:887080169480:layer:php71:8**
 
 See [Releases](https://github.com/stackery/php-lambda-layer/releases) for release notes.
 
@@ -30,7 +31,7 @@ There are three locations where PHP configuration may be located:
 * Files in function code package located under /php-${PHP_VERSION}.d/
 * php.ini located at the root of the function code package
 
-Replace ${PHP_VERSION} with '7.1', '7.2', or '7.3' according to your preferred runtime.
+Replace ${PHP_VERSION} with '7.3', or '7.1' according to your preferred runtime.
 
 ##### Extensions
 The following extensions are built into the layer and available in /opt/lib/php/${PHP_VERSION}/modules:
@@ -103,7 +104,7 @@ Resources:
       Timeout: 30
       Tracing: Active
       Layers:
-        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php71:7
+        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php73:1
       Events:
         api:
           Type: Api
@@ -144,24 +145,22 @@ $ sam deploy \
 ```
 
 ### Development
-Build the layer by:
+Build the layers by:
 
 1. Installing a Docker environment
 1. Running `make`
 
-This will launch a Docker container that will build php71.zip.
-
-You can run `make php72.zip` and `make php73.zip` to create a layer that is based on PHP 7.2/7.3.
+This will launch Docker containers that will build php73.zip and php71.zip.
 
 If you are behind a proxy server, just set the environment variable `http_proxy` before
 invoking `make`, eg.:
 
 ```sh
-	$ export http_proyx=http://myproxy.acme.com:8080
+	$ export http_proxy=http://myproxy.acme.com:8080
 	$ make php73.zip
 ```
 
-### Debugging
+#### Debugging Layer Builds
 
 Run:
 
@@ -175,7 +174,7 @@ If you are on Windows, run this instead:
 	> docker run --rm -it -v %cd%:/opt/layer lambci/lambda:build-nodejs8.10 /bin/bash
 ```
 
-and execute manually the commands in the build.sh file.
+then manually execute the commands in the build.sh file.
 
 ### Disclaimer
 
