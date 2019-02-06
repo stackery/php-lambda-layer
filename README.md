@@ -9,9 +9,9 @@ This is an early iteration of the PHP runtime Layer which is not yet ready for p
 ## Current Layer Version ARN
 When creating/updating a Lambda function you must specify  a specific version of the layer. This readme will be kept up to date with the latest version available. The latest available Lambda Layer Version ARNs for PHP 7.3 and 7.1 are:
 
-**arn:aws:lambda:\<region\>:887080169480:layer:php73:1**
-<br>
-**arn:aws:lambda:\<region\>:887080169480:layer:php71:8**
+**arn:aws:lambda:\<region\>:887080169480:layer:php73:2**
+
+**arn:aws:lambda:\<region\>:887080169480:layer:php71:9**
 
 See [Releases](https://github.com/stackery/php-lambda-layer/releases) for release notes.
 
@@ -105,7 +105,7 @@ Resources:
       Timeout: 30
       Tracing: Active
       Layers:
-        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php73:1
+        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php73:2
       Events:
         api:
           Type: Api
