@@ -12,7 +12,7 @@ function start_webserver() {
   $pid = pcntl_fork();
   switch($pid) {
     case -1:
-      die('Failed to fork webserver process');
+      die("Failed to fork webserver process\n");
 
     case 0:
       // exec the command
@@ -94,7 +94,7 @@ while (true) {
   }
 
   if ($invocation_id == '') {
-    die('Failed to determine Lambda invocation ID');
+    die("Failed to determine Lambda invocation ID\n");
   }
 
   curl_close($ch);
