@@ -45,6 +45,11 @@ function isSQSRequest($event)
     return array_key_exists('Records', $event);
 }
 
+function isCloudWatchEvent($event)
+{
+    return array_key_exists('source', $event) && $event['source'] == 'aws.events';
+}
+
 function fail($AWS_LAMBDA_RUNTIME_API, $invocation_id, $message)
 {
     $ch = curl_init("http://$AWS_LAMBDA_RUNTIME_API/2018-06-01/runtime/invocation/$invocation_id/response");
@@ -151,20 +156,20 @@ while (true) {
             break;
 
         case isSQSRequest($event):
+        case isCloudWatchEvent($event):
             $ch = curl_init("http://localhost:8000");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
             curl_setopt($ch, CURLOPT_INFILESIZE, strlen($body));
             curl_setopt($ch, CURLOPT_READFUNCTION, function ($ch, $fd, $length) use ($body) {
                 return $body;
             });
-            $isALB=false;
+            $isALB = false;
 
             break;
         default:
-            fail($AWS_LAMBDA_RUNTIME_API, $invocation_id, 'Event is not an API Gateway or SQS request');
+            fail($AWS_LAMBDA_RUNTIME_API, $invocation_id, 'Event is not an API Gateway, CloudWatch Event or SQS request');
             continue 2;
     }
-
 
 
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
