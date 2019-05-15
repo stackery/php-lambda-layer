@@ -37,6 +37,33 @@ Replace ${PHP_VERSION} with '7.3', or '7.1' according to your preferred runtime.
 ##### Extensions
 The following extensions are built into the layer and available in /opt/lib/php/${PHP_VERSION}/modules:
 
+PHP 7.3 Layer:
+```
+bz2.so
+calendar.so
+ctype.so
+curl.so
+exif.so
+fileinfo.so
+ftp.so
+gettext.so
+iconv.so
+json.so
+mbstring.so
+mysqli.so
+mysqlnd.so
+pdo.so
+pdo_mysql.so
+pdo_pgsql.so
+pdo_sqlite.so
+pgsql.so
+phar.so
+sockets.so
+sqlite3.so
+tokenizer.so
+```
+
+PHP 7.1 Layer:
 ```
 bz2.so
 calendar.so
