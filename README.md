@@ -43,6 +43,7 @@ bz2.so
 calendar.so
 ctype.so
 curl.so
+dom.so
 exif.so
 fileinfo.so
 ftp.so
@@ -52,15 +53,26 @@ json.so
 mbstring.so
 mysqli.so
 mysqlnd.so
-pdo.so
 pdo_mysql.so
 pdo_pgsql.so
+pdo.so
 pdo_sqlite.so
 pgsql.so
 phar.so
+posix.so
+shmop.so
+simplexml.so
 sockets.so
 sqlite3.so
+sysvmsg.so
+sysvsem.so
+sysvshm.so
 tokenizer.so
+wddx.so
+xmlreader.so
+xml.so
+xmlwriter.so
+xsl.so
 ```
 
 PHP 7.1 Layer:
