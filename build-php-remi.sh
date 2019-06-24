@@ -36,6 +36,7 @@ done
 cp /usr/lib64/libedit.so.0 lib/
 cp /usr/lib64/libargon2.so.0 lib/
 cp /usr/lib64/libpq.so.5 lib/
+cp /usr/lib64/libonig.so.5 lib/
 
 mkdir -p lib/php/7.${PHP_MINOR_VERSION}
 cp -a /usr/lib64/php/modules lib/php/7.${PHP_MINOR_VERSION}/
