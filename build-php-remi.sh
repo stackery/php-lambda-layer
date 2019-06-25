@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 PHP_MINOR_VERSION=$1
 

@@ -171,13 +171,7 @@ while (true) {
   }
 
   if (strlen($body) > 0) {
-    if($event['httpMethod'] === 'POST'){
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    }    
-    curl_setopt($ch, CURLOPT_INFILESIZE, strlen($body));
-    curl_setopt($ch, CURLOPT_READFUNCTION, function ($ch, $fd, $length) use ($body) {
-      return $body;
-    });
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
   }
 
   $response = array();
