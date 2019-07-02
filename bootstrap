@@ -145,7 +145,7 @@ while (true) {
 
   $ch = curl_init("http://localhost:8000$uri");
 
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);
 
   if (array_key_exists('multiValueHeaders', $event)) {
     $headers = array();
