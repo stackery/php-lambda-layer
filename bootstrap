@@ -225,7 +225,8 @@ while (true) {
     } else {
         $response["statusDescription"] = "$status Unknown";
     }
-    $response["isBase64Encoded"] = false;
+    $response["body"] = base64_encode($response["body"]);
+    $response["isBase64Encoded"] = true;
   }
   $response_json = json_encode($response);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
