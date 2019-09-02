@@ -53,15 +53,14 @@ json.so
 mbstring.so
 mysqlnd.so
 mysqli.so
+pdo.so
 pdo_mysql.so
 pdo_pgsql.so
-pdo.so
 pdo_sqlite.so
 pgsql.so
 phar.so
 posix.so
 shmop.so
-simplexml.so
 sockets.so
 sqlite3.so
 sysvmsg.so
@@ -69,9 +68,10 @@ sysvsem.so
 sysvshm.so
 tokenizer.so
 wddx.so
-xmlreader.so
 xml.so
+xmlreader.so
 xmlwriter.so
+simplexml.so
 xsl.so
 ```
 
