@@ -51,8 +51,8 @@ gettext.so
 iconv.so
 json.so
 mbstring.so
-mysqli.so
 mysqlnd.so
+mysqli.so
 pdo_mysql.so
 pdo_pgsql.so
 pdo.so
