@@ -67,12 +67,12 @@ sysvmsg.so
 sysvsem.so
 sysvshm.so
 tokenizer.so
-wddx.so
 xml.so
 xmlreader.so
 xmlwriter.so
 simplexml.so
 xsl.so
+wddx.so
 ```
 
 PHP 7.1 Layer:
