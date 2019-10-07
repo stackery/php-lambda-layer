@@ -1,4 +1,5 @@
 PHP_REGIONS=(
+  me-south-1
   ap-northeast-1
   ap-northeast-2
   ap-south-1
