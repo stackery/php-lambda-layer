@@ -19,7 +19,7 @@ yum install -y libargon2-devel
 yum install -y liblzf gcc libedit-devel pango
 yum install -y pecl make ImageMagick ImageMagick-devel re2c
 
-yum install -y --disablerepo="*" --enablerepo="remi,remi-php7${PHP_MINOR_VERSION}" php php-pear php-devel php-mbstring php-pdo php-mysql php-pgsql php-xml php-process php-msgpack php-igbinary php-redis
+yum install -y --disablerepo="*" --enablerepo="remi,remi-php7${PHP_MINOR_VERSION}" php php-pear php-devel php-mbstring php-pdo php-mysql php-pgsql php-xml php-process php-msgpack php-igbinary php-redis php-soap
 pecl install imagick
 
 mkdir /tmp/layer
@@ -39,9 +39,9 @@ cp /usr/lib64/libedit.so.0 lib/
 cp /usr/lib64/libargon2.so.0 lib/
 cp /usr/lib64/libpq.so.5 lib/
 cp /usr/lib64/libonig.so.5 lib/
-cp liblzf.so.1 lib/
-cp libpango-1.0.so.0 lib/
-cp libpangocairo-1.0.so.0  lib/
+cp /usr/lib64/liblzf.so.1 lib/
+cp /usr/lib64/libpango-1.0.so.0 lib/
+cp /usr/lib64/libpangocairo-1.0.so.0  lib/
 
 mkdir -p lib/php/7.${PHP_MINOR_VERSION}
 cp -a /usr/lib64/php/modules lib/php/7.${PHP_MINOR_VERSION}/
