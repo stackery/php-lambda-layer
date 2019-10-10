@@ -49,10 +49,13 @@ fileinfo.so
 ftp.so
 gettext.so
 iconv.so
+igbinary.so
+imagick.so
 json.so
 mbstring.so
-mysqli.so
+msgpack.so
 mysqlnd.so
+mysqli.so
 pdo_mysql.so
 pdo_pgsql.so
 pdo.so
@@ -60,6 +63,7 @@ pdo_sqlite.so
 pgsql.so
 phar.so
 posix.so
+redis.so
 shmop.so
 simplexml.so
 sockets.so
