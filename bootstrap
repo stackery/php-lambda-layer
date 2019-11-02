@@ -134,10 +134,10 @@ while (true) {
           $uri .= "&";
         }
 
-        $uri .= rawurlencode($name);
+        $uri .= rawurlencode($name) . '=';
 
         if ($value != '') {
-          $uri .= '=' . rawurlencode($value);
+          $uri .= rawurlencode($value);
         }
       }
     }
