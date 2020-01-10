@@ -1,0 +1,7 @@
+extension_dir=/opt/lib/php/modules
+display_errors=On
+
+extension=curl.so
+extension=json.so
+extension=mbstring.so
+extension=zip.so
