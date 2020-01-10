@@ -30,6 +30,9 @@ if [ "${GENERAL_EVENT}" = "true" ]; then
   ./composer.phar global require aws/aws-sdk-php
   ./composer.phar global clear-cache
   cp -a /root/.composer lib/composer
+  cp /opt/layer/php.ini.generalenv php.ini
+  mv lib/php/7.1/* lib/php/
+  rmdir lib/php/7.1
 fi
 
 zip -r /opt/layer/${TARGET_NAME}.zip .
