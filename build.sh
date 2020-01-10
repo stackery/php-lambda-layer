@@ -20,4 +20,16 @@ cp /usr/lib64/libpq.so.5 lib/
 
 cp -a /usr/lib64/php lib/
 
-zip -r /opt/layer/php71.zip .
+TARGET_NAME=php71
+if [ "${GENERAL_EVENT}" = "true" ]; then
+  TARGET_NAME=${TARGET_NAME}g
+
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php composer-setup.php
+  php -r "unlink('composer-setup.php');"
+  ./composer.phar global require aws/aws-sdk-php
+  ./composer.phar global clear-cache
+  cp -a /root/.composer lib/composer
+fi
+
+zip -r /opt/layer/${TARGET_NAME}.zip .
