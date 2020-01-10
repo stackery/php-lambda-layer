@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+PHP_INI_SCAN_DIR=/opt/etc/php.d/:/var/task/etc/php.d/ /opt/bin/php -c /opt/php.ini -d extension_dir=/opt/lib/php/modules /opt/lib/runtime.php

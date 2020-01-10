@@ -54,6 +54,8 @@ if [ "${GENERAL_EVENT}" = "true" ]; then
   cp /opt/layer/php.ini.generalenv php.ini
   mv lib/php/7.${PHP_MINOR_VERSION}/* lib/php/
   rmdir lib/php/7.${PHP_MINOR_VERSION}
+  cp /opt/layer/bootstrap.generalenv bootstrap
+  cp /opt/layer/lib/*.php lib/
 fi
 
 zip -r /opt/layer/${TARGET_NAME}.zip .
